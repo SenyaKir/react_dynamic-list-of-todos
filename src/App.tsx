@@ -18,12 +18,13 @@ export const App: React.FC = () => {
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState<string>('');
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [errorRequestTodo, setErrorRequestTodo] = useState<string | null>(null);
 
   useEffect(() => {
     getTodos()
       .then(setTodos)
-      .catch(err => {
-        throw new Error('Error loading Todos: ' + err);
+      .catch(() => {
+        setErrorRequestTodo('Error loading Todos');
       })
       .finally(() => setLoading(false));
   }, []);
@@ -70,13 +71,33 @@ export const App: React.FC = () => {
 
             <div className="block">
               {loading && <Loader />}
-              {!loading && todos.length > 0 && (
-                <TodoList
-                  todos={filteredTodos}
-                  selectedTodo={selectedTodo}
-                  onSelect={setSelectedTodo}
-                />
-              )}
+
+              <table className="table is-narrow is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>
+                      <span className="icon">
+                        <i className="fas fa-check" />
+                      </span>
+                    </th>
+                    <th>Title</th>
+                    <th> </th>
+                  </tr>
+                </thead>
+
+                {errorRequestTodo && (
+                  <p className="has-text-danger">{errorRequestTodo}</p>
+                )}
+
+                {!loading && todos.length > 0 && (
+                  <TodoList
+                    todos={filteredTodos}
+                    selectedTodo={selectedTodo}
+                    onSelect={setSelectedTodo}
+                  />
+                )}
+              </table>
             </div>
           </div>
         </div>
