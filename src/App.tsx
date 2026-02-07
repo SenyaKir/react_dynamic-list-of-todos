@@ -70,34 +70,32 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
+              {loading ? (
+                <Loader />
+              ) : errorRequestTodo ? (
+                <p className="has-text-danger">{errorRequestTodo}</p>
+              ) : (
+                <table className="table is-narrow is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>
+                        <span className="icon">
+                          <i className="fas fa-check" />
+                        </span>
+                      </th>
+                      <th>Title</th>
+                      <th> </th>
+                    </tr>
+                  </thead>
 
-              <table className="table is-narrow is-fullwidth">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>
-                      <span className="icon">
-                        <i className="fas fa-check" />
-                      </span>
-                    </th>
-                    <th>Title</th>
-                    <th> </th>
-                  </tr>
-                </thead>
-
-                {errorRequestTodo && (
-                  <p className="has-text-danger">{errorRequestTodo}</p>
-                )}
-
-                {!loading && todos.length > 0 && (
                   <TodoList
                     todos={filteredTodos}
                     selectedTodo={selectedTodo}
                     onSelect={setSelectedTodo}
                   />
-                )}
-              </table>
+                </table>
+              )}
             </div>
           </div>
         </div>
